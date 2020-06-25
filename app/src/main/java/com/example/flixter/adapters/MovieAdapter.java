@@ -1,6 +1,7 @@
 package com.example.flixter.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.flixter.MovieDetailsActivity;
 import com.example.flixter.R;
 import com.example.flixter.models.Movie;
 
+import org.parceler.Parcels;
+
+import java.io.File;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -52,7 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     // View holder is a representation of a row of our view
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tmTitle;
         TextView tmOverview;
@@ -63,22 +69,38 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tmTitle = itemView.findViewById(R.id.tmTitle);
             tmOverview = itemView.findViewById(R.id.tmOverview);
             imPoster = itemView.findViewById(R.id.imPoster);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             tmTitle.setText(movie.getTitle());
             tmOverview.setText(movie.getOverview());
             String imageUrl;
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) { // landscape
-                imageUrl = movie.getBackdropPath();
-            } else { // portrait
-                imageUrl = movie.getPosterPath();
-            }
             int radius = 30;
             int margin = 0;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) { // landscape
+                imageUrl = movie.getBackdropPath();
+                Glide.with(context).load(imageUrl).placeholder(R.drawable.flicks_backdrop_placeholder).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
+            } else { // portrait
+                imageUrl = movie.getPosterPath();
+                Glide.with(context).load(imageUrl).placeholder(R.drawable.flicks_movie_placeholder).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
+            }
             // Glide.with(context).load(imageUrl).transform(new RoundedCorners(radius)).into(imPoster);
             // why did I have to switch height from wrapcontent -> 200 dp for this to look right?
-            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) { // check validity of position
+                Movie movie = movies.get(position);
+                Intent intent = new Intent(context, MovieDetailsActivity.class); // to do: need to understands intents better
+                intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie)); // pass data
+                context.startActivity(intent); // show activity
+
+            }
         }
     }
 }
