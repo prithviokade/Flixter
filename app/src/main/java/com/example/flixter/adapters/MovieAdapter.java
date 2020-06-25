@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.flixter.R;
 import com.example.flixter.models.Movie;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -71,7 +74,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             } else { // portrait
                 imageUrl = movie.getPosterPath();
             }
-            Glide.with(context).load(imageUrl).into(imPoster);
+            int radius = 50;
+            int margin = 0;
+            Glide.with(context).load(imageUrl).transform(new RoundedCorners(radius)).into(imPoster);
+            // Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
         }
     }
 }
