@@ -74,10 +74,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             } else { // portrait
                 imageUrl = movie.getPosterPath();
             }
-            int radius = 50;
+            int radius = 30;
             int margin = 0;
-            Glide.with(context).load(imageUrl).transform(new RoundedCorners(radius)).into(imPoster);
-            // Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
+            // Glide.with(context).load(imageUrl).transform(new RoundedCorners(radius)).into(imPoster);
+            // why did I have to switch height from wrapcontent -> 200 dp for this to look right?
+            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(imPoster);
         }
     }
 }
