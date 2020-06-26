@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#232323">
 
     <ImageView
         android:id="@+id/imPoster"
@@ -24,6 +25,7 @@
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/imPoster"
         android:textSize="24sp"
+        android:textColor="#FFFFFF"
         tools:text="Fast &amp; Furious Presents: Hobbs &amp; Shaw" />
 
     <TextView
@@ -33,6 +35,7 @@
         android:layout_below="@+id/tmTitle"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:textColor="#FFFFFF"
         android:layout_toEndOf="@+id/imPoster"
         tools:text="A spinoff of The Fate of the Furious, following on Johnson's US Diplomatic Security Agent Luke Hobbs forming an unlikely alliance with Statham's Deckard Shaw." />
 

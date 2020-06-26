@@ -3,15 +3,19 @@ package com.example.flixter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.flixter.databinding.ActivityMainBinding;
+import com.example.flixter.databinding.ActivityMovieDetailsBinding;
 import com.example.flixter.models.Movie;
 
 import org.parceler.Parcels;
@@ -35,19 +39,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         // retrieve with getIntent, getParcelable Extra
         // unwrap with Parcels.unwrap
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s'", movie.getTitle()));
 
         // member variables
-        tvTitle = findViewById(R.id.tvTitle);
-        tvOverview = findViewById(R.id.tvOverview);
-        rbVoteAverage = findViewById(R.id.rbVoteAverage);
-        popularity = findViewById(R.id.tvPopularity);
-        release = findViewById(R.id.tvReleaseDate);
-        background = findViewById(R.id.ivBack);
+        tvTitle = binding.tvTitle;
+        tvOverview = binding.tvOverview;
+        rbVoteAverage = binding.rbVoteAverage;
+        popularity = binding.tvPopularity;
+        release = binding.tvReleaseDate;
+        background = binding.ivBack;
 
         // set movie info to displayed elements
         tvTitle.setText(movie.getTitle());
@@ -64,15 +71,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             imageUrl = movie.getPosterPath();
             Log.d("MovieDetails", imageUrl);
-            if (background == null) {
-                Log.d("MovieDetailsHere", "noooo");
-            }
             Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_movie_placeholder).into(background);
         } else {
             imageUrl = movie.getBackdropPath();
             Log.d("MovieDetails", imageUrl);
             Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_backdrop_placeholder).into(background);
         }
+
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String videoID = movie.getId().toString();
+                if (videoID != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(MovieTrailerActivity.VIDEO_ID, movie.getId().toString());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }
+        });
 
 
     }

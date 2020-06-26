@@ -76,6 +76,10 @@ public class Movie {
         return voteAverage;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getRelease() {
         return "Release date: " + release;
     }

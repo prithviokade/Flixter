@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixter.adapters.MovieAdapter;
+import com.example.flixter.databinding.ActivityMainBinding;
 import com.example.flixter.models.Movie;
 
 import org.json.JSONArray;
@@ -23,7 +25,7 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=7f1f01fc4ac3ee3515fbc0d6cb412e90";
     // public static final String CONFIG_URL = "https://api.themoviedb.org/3/configuration?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
     public static final String TAG = "MainActivity"; // for logging ease
 
@@ -32,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+
+        RecyclerView rvMovies = binding.rvMovies;
         movies = new ArrayList<>();
         // create adapter
         final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
