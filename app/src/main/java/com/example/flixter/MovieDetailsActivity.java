@@ -2,20 +2,27 @@ package com.example.flixter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.flixter.models.Movie;
 
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     Movie movie; // movie we want to display full screen
+
 
     // instantiate
     TextView tvTitle;
@@ -23,6 +30,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     RatingBar rbVoteAverage;
     TextView popularity;
     TextView release;
+    ImageView background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         rbVoteAverage = findViewById(R.id.rbVoteAverage);
         popularity = findViewById(R.id.tvPopularity);
         release = findViewById(R.id.tvReleaseDate);
+        background = findViewById(R.id.ivBack);
 
         // set movie info to displayed elements
         tvTitle.setText(movie.getTitle());
@@ -50,6 +59,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
             voteAverage /= 2.0f;
         }
         rbVoteAverage.setRating(voteAverage);
+        String imageUrl;
+        Log.d("MovieDetailsHere", Integer.toString(this.getResources().getConfiguration().orientation));
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            imageUrl = movie.getPosterPath();
+            Log.d("MovieDetails", imageUrl);
+            if (background == null) {
+                Log.d("MovieDetailsHere", "noooo");
+            }
+            Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_movie_placeholder).into(background);
+        } else {
+            imageUrl = movie.getBackdropPath();
+            Log.d("MovieDetails", imageUrl);
+            Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_backdrop_placeholder).into(background);
+        }
+
 
     }
 }

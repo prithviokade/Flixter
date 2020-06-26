@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#232323">
 
     <ImageView
         android:id="@+id/imPoster"
-        android:layout_width="120dp"
-        android:layout_height="200dp"
+        android:layout_width="130dp"
+        android:layout_height="195dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -20,9 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
+        android:layout_marginEnd="1dp"
         android:layout_toEndOf="@+id/imPoster"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         tools:text="Fast &amp; Furious Presents: Hobbs &amp; Shaw" />
 
@@ -34,6 +40,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/imPoster"
+        android:textColor="#EFEFEF"
         tools:text="A spinoff of The Fate of the Furious, following on Johnson's US Diplomatic Security Agent Luke Hobbs forming an unlikely alliance with Statham's Deckard Shaw." />
 
 

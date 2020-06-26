@@ -21,6 +21,7 @@ public class Movie {
     String release;
     Double popularity;
     Double voteAverage;
+    Integer id;
 
     public Movie() { }
 
@@ -33,6 +34,7 @@ public class Movie {
         voteAverage = jsonObject.getDouble("vote_average");
         popularity = jsonObject.getDouble("popularity");
         release = jsonObject.getString("release_date");
+        id = jsonObject.getInt("id");
     }
 
     // convert movie JSON Array to list of Movie objects
