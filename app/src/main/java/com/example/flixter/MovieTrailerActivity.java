@@ -28,7 +28,7 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
     Movie movie;
     String videoId;
     String youtubeId;
-    public static final String VIDEO_ID = "video_id";
+    public static final String VIDEO_ID_EXTRA = "video_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,6 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setContentView(R.layout.activity_movie_trailer);
-
         // resolve the player view from the layout
         YouTubePlayerView playerView = (YouTubePlayerView) binding.player;
 
@@ -46,12 +44,12 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
         playerView.initialize(getString(R.string.youtube_api_key), new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                YouTubePlayer youTubePlayer, boolean b) {
+                                                final YouTubePlayer youTubePlayer, boolean b) {
                 // do any work here to cue video, play video, etc.
-                videoId = VIDEO_ID;
-                Log.d("TrailerActivity", videoId);
+                Log.d("TrailerActivity", VIDEO_ID_EXTRA);
 
                 AsyncHttpClient client = new AsyncHttpClient();
+                videoId = getIntent().getStringExtra(VIDEO_ID_EXTRA);
                 NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/" + videoId + "/videos?api_key=7f1f01fc4ac3ee3515fbc0d6cb412e90&language=en-US";
                 client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
 
@@ -62,7 +60,9 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                         try {
                             JSONArray results = result.getJSONArray("results");
                             Log.d("TrailerActivity", "Results:" +results.toString());
-                            youtubeId = result.getString("key");
+                            youtubeId = results.getJSONObject(0).getString("key");
+                            Log.d("TrailerActivity", youtubeId);
+                            youTubePlayer.loadVideo(youtubeId);
                         } catch (JSONException e) {
                             Log.d("TrailerActivity", "Hit JSON exception");
                         }
@@ -74,7 +74,6 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                     }
                 });
 
-                youTubePlayer.cueVideo(youtubeId);
 
             }
 

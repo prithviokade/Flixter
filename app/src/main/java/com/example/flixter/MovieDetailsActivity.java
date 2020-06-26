@@ -83,10 +83,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String videoID = movie.getId().toString();
                 if (videoID != null) {
-                    Intent intent = new Intent();
-                    intent.putExtra(MovieTrailerActivity.VIDEO_ID, movie.getId().toString());
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    Intent intent = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+                    Log.d("MovieDetailsSent", videoID);
+                    intent.putExtra(MovieTrailerActivity.VIDEO_ID_EXTRA, videoID);
+                    MovieDetailsActivity.this.startActivity(intent);
                 }
             }
         });
