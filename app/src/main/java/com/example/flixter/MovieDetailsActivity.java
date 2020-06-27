@@ -87,7 +87,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Log.d("MovieDetails", imageUrl);
             Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_backdrop_placeholder).into(background);
         }
-
+        /*
         background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +99,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     MovieDetailsActivity.this.startActivity(intent);
                 }
             }
-        });
+        }); */
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
