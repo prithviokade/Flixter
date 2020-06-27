@@ -1,13 +1,11 @@
 package com.example.flixter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.example.flixter.databinding.ActivityMainBinding;
 import com.example.flixter.databinding.ActivityMovieTrailerBinding;
 import com.example.flixter.models.Movie;
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -18,7 +16,6 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import okhttp3.Headers;
 
@@ -84,6 +81,7 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                 Log.e("MovieTrailerActivity", "Error initializing YouTube player");
             }
         });
+
     }
 
 
