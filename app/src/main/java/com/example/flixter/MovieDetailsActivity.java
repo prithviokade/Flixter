@@ -3,6 +3,7 @@ package com.example.flixter;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,12 +19,8 @@ import com.bumptech.glide.Glide;
 import com.example.flixter.databinding.ActivityMovieDetailsBinding;
 import com.example.flixter.models.Movie;
 
-import org.apache.commons.io.FileUtils;
 import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -42,7 +39,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     Button add;
     Button viewbtn;
 
-    ArrayList<String> watchList;
+    ArrayList<Movie> watchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +64,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         add = binding.addbtn;
         viewbtn = binding.viewbtn;
 
+        watchList = new ArrayList<>();
+
         // set movie info to displayed elements
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
@@ -89,7 +88,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Glide.with(this).load(imageUrl).placeholder(R.drawable.flicks_backdrop_placeholder).into(background);
         }
 
-        loadItems();
         background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,18 +122,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
                     String movieTitle = movie.getTitle();
                     if (watchList != null) {
-                        watchList.remove(movieTitle);
+                        watchList.remove(movie);
                         Toast.makeText(getApplicationContext(), movieTitle + " removed from Watch List", Toast.LENGTH_SHORT).show();
                     }
-                    saveItems();
 
                 } else {
                     add.setText("Remove from Watch List");
 
                     String movieTitle = movie.getTitle();
-                    watchList.add(movieTitle);
+                    watchList.add(movie);
                     Toast.makeText(getApplicationContext(), movieTitle + " added to Watch List", Toast.LENGTH_SHORT).show();
-                    saveItems();
 
                 }
 
@@ -146,38 +142,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MovieDetailsActivity.this, WatchListActivity.class);
-                Bundle b = new Bundle();
-                b.putStringArrayList("watchListAll", watchList);
-                intent.putExtras(b);
+                // Bundle b = new Bundle();
+                ArrayList<Parcelable> watchListP = new ArrayList<>();
+                for (int i = 0; i < watchList.size(); i++) {
+                    watchListP.add(Parcels.wrap(watchList.get(i)));
+                }
+                intent.putExtra("watchListAll", watchListP);
+                //intent.putExtras(b);
                 MovieDetailsActivity.this.startActivity(intent);
             }
         });
 
     }
 
-    // data file holds list items
-    private File getDataFile() {
-        return new File(getFilesDir(), "finData.txt");
-    }
-
-    // read data file, load contents to items
-    private void loadItems() {
-        try {
-            watchList = new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
-        } catch (IOException e) {
-            Log.e("MainActivity", "Error reading items", e);
-            watchList = new ArrayList<>();
-        }
-    }
-
-    // write data file, save items to file
-    private void saveItems() {
-        try {
-            FileUtils.writeLines(getDataFile(), watchList);
-        } catch (IOException e) {
-            Log.e("MainActivity", "Error writing items", e);
-        }
-    }
 
 
 }
